@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Promena koordinate sa OPC servera</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <style>
+            body {
+                font-family: Monospace;
+                background-color: #cccccc;
+                color: #cccccc;
+                margin: 0px;
+                overflow: hidden;
+            }
+            #info {
+                color: #cccccc;
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                text-align: center;
+                z-index: 100;
+                display:block;
+            }
+            #info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+        </style>
+    </head>
+
+    <body>
+        <script src="three.min.js"></script>
+        <script src="MTLLoader.js"></script>
+        <script src="OBJMTLLoader.js"></script>
+        <script src="Detector.js"></script>
+        <script src="TrackballControls.js"></script>
+        <script src="stats.min.js"></script>
+        <script src="dat.gui.min.js"></script>
+        <script src="websocket.js"></script>       
+
+        <div id="koordinata"></div>
+
+        <script>
+            var container, stats;
+            var camera, scene, renderer, trackballControls;
+            var OPC_koordinata = 0;
+            var objectKlip;
+
+            var controls = new function() {
+                this.OPC_koordinata = 0.0;
+            };
+
+            var gui = new dat.GUI();
+            gui.add(controls, 'OPC_koordinata', 0, 100).listen();
+            init();
+            animate();
+
+
+            function init() {
+                container = document.createElement('div');
+                document.body.appendChild(container);
+                
+                camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+                
+
+                trackballControls = new THREE.TrackballControls(camera);
+
+                trackballControls.rotateSpeed = 1.0;
+                trackballControls.zoomSpeed = 1.2;
+                trackballControls.panSpeed = 0.8;
+
+                trackballControls.noZoom = false;
+                trackballControls.noPan = false;
+
+                trackballControls.staticMoving = true;
+                trackballControls.dynamicDampingFactor = 0.3;
+
+                trackballControls.keys = [65, 83, 68];
+
+                trackballControls.addEventListener('change', render);
+                scene = new THREE.Scene();
+
+                var ambient = new THREE.AmbientLight(0x000044);
+                scene.add(ambient);
+
+                var directionalLight = new THREE.DirectionalLight(0xffeedd);
+                directionalLight.position.set(0, 0, 1).normalize();
+                scene.add(directionalLight);
+
+                var hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
+                hemiLight.color.setHSL(0.6, 1, 0.6);
+                hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+                hemiLight.position.set(1, 1, 1);
+                scene.add(hemiLight);
+
+                var dirLight = new THREE.DirectionalLight(0xffffff, 1);
+                dirLight.color.setHSL(0.1, 1, 0.95);
+                dirLight.position.set(1, 1, 1);
+                dirLight.position.multiplyScalar(250);
+                scene.add(dirLight);
+
+                var loader = new THREE.OBJMTLLoader();
+                loader.load('objekti/cilindar.obj', 'objekti/cilindar.mtl', function(object) {
+                    object.scale.set(10, 10, 10);
+                    scene.add(object);
+                });
+
+                loader.load('objekti/klip.obj', 'objekti/klip.mtl', function(object) {
+                    object.scale.set(10, 10, 10);
+                    objectKlip = object;
+                    scene.add(object);
+
+                });
+
+                renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                var axes = new THREE.AxisHelper(20);
+                scene.add(axes);
+                
+                camera.position.x = 100;
+                camera.position.y = 50;
+                camera.position.z = 100;
+                camera.lookAt(scene.position);
+
+                container.appendChild(renderer.domElement);
+
+                stats = new Stats();
+                stats.setMode(0);
+                stats.domElement.style.position = 'absolute';
+                stats.domElement.style.top = '0px';
+                container.appendChild(stats.domElement);
+
+                window.addEventListener('resize', onWindowResize, false);
+
+            }
+
+            function onWindowResize() {
+
+                windowHalfX = window.innerWidth / 2;
+                windowHalfY = window.innerHeight / 2;
+
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                trackballControls.handleResize();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                trackballControls.update();
+                stats.update();
+                render();   
+            }
+
+            function render() {
+                var koordinata = document.getElementById("koordinata").innerHTML;
+                objectKlip.position.z = - koordinata / 4;
+                controls.OPC_koordinata = koordinata;
+                renderer.render(scene, camera);
+            }
+
+
+        </script>
+    </body>
+</html>

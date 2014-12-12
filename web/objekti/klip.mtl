@@ -1,0 +1,14 @@
+# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
+# File Created: 09.06.2014 18:39:21
+
+newmtl Reflection_Chrome2
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.4863 0.4863 0.4863
+	Ks 0.8100 0.8100 0.8100
+	Ke 0.1843 0.1843 0.1843

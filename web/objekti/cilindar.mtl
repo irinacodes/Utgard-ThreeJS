@@ -1,0 +1,29 @@
+# 3ds Max Wavefront OBJ Exporter v0.94b - (c)2007 guruware
+# File Created: 09.06.2014 18:41:03
+
+newmtl Space_Earth
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.1961 0.4980 0.7294
+	Ks 0.4500 0.4500 0.4500
+	Ke 0.0000 0.0000 0.0000
+	map_Ka maps\Map__1_Mix.tga
+	map_Kd maps\Map__1_Mix.tga
+	map_Ke maps\Map__10_Mask.tga
+
+newmtl Reflection_Chrome2
+	Ns 20.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 1.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.4863 0.4863 0.4863
+	Ks 0.8100 0.8100 0.8100
+	Ke 0.1843 0.1843 0.1843

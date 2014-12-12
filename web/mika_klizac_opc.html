@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <title>j3qUE interactive</title>
+    <meta charset=utf-8 />
+    <script src="jquery-1.9.1.js"></script>
+    <script src="jquery-ui.js"></script>
+    <link rel=stylesheet href="jquery-ui.css" />
+</head>
+<body>
+<script>
+    $(function() {
+
+        var e = $.elements = {};
+        e.positionZ = 1;
+
+        $( "body" ).css( { "margin":"0", "overflow":"hidden" } );
+
+        $("<iframe />", {
+            css: { "height": window.innerHeight + "px", "position":"absolute", "width": window.innerWidth + "px" },
+            id: "ifr",
+            src: "mika_klip_cilindar.html"
+        }).appendTo("body");
+
+        $("<div id='dialog' title='Pomeranje klipa preko klizača' ></div>").appendTo("body");
+        $( "#dialog" ).dialog({
+            position: {
+                my: "right top",
+                at: "right-" + 30 + " top+" + 20,
+                of: window
+            }
+        });
+
+        $("<p>Z koordinata:</p><div id='slider' ></div>").appendTo("#dialog");
+        $( "#slider" ).slider( {
+            max: 26,
+            min: 0,
+            slide: function( event, ui ) {
+                e.positionZ = ui.value;
+            },
+            step: 0.1,
+            value: e.positionZ
+
+        });
+    });
+</script>
+</body>
+</html>
